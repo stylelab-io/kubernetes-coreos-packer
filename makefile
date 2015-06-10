@@ -10,17 +10,13 @@ FILES = \
 	files/install.yml \
 	files/vagrant
 
-box: coreos.json builds/parallels/coreos-$(CHANNEL).box builds/virtualbox/coreos-$(CHANNEL).box $(FILES)
-
-builds/parallels/coreos-$(CHANNEL).box:
-	packer build -only=parallels-iso coreos.json
+box: coreos.json builds/virtualbox/coreos-$(CHANNEL).box $(FILES)
 
 builds/virtualbox/coreos-$(CHANNEL).box:
 	packer build -only=virtualbox-iso coreos.json
 
-install: builds/parallels/coreos-$(CHANNEL).box builds/virtualbox/coreos-$(CHANNEL).box
-	vagrant box add --force --provider=parallels --name bassamtabbara/coreos-$(CHANNEL) builds/parallels/coreos-$(CHANNEL).box
-	vagrant box add --force --provider=virtualbox --name bassamtabbara/coreos-$(CHANNEL) builds/virtualbox/coreos-$(CHANNEL).box
+install: builds/virtualbox/coreos-$(CHANNEL).box
+	vagrant box add --force --provider=virtualbox --name wasbazi/coreos-$(CHANNEL) builds/virtualbox/coreos-$(CHANNEL).box
 
 clean:
 	rm -fr builds
