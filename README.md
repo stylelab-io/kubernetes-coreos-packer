@@ -35,7 +35,7 @@ packer build \
 
 Variables
 =========
-- channel - Can be set to `alpha`, `beta`, or `stable` *DEFAULT: stable*
-- version - The version of CoreOS *DEFAULT: current*
-- checksum_type - The checksum algorithm for the iso *DEFAULT: md5*
-- checksum - The checksum of the latest iso *DEFAULT: 560f13071604d492e19bbc9f0818713a*
+- channel - Can be set to `alpha`, `beta`, or `stable` **DEFAULT: stable**
+- version - The version of CoreOS **DEFAULT: current**
+- checksum_type - The checksum algorithm for the iso **DEFAULT: md5**
+- checksum - The checksum of the latest iso **DEFAULT: 560f13071604d492e19bbc9f0818713a**
