@@ -1,20 +1,18 @@
-coreos-packer
+CoreOS-Packer
 =============
 
 Packer.io templates for CoreOS. These are based on the following:
 
   - https://github.com/coreos/coreos-overlay/tree/master/coreos-base/oem-vagrant
   - https://github.com/YungSang/coreos-packer
+  - https://github.com/kevit/coreos-packer
 
-Currently only parallels and virtualbox are supported.
+Currently only VirtualBox is supported.
 
 Requirements
 ============
 
-Parallels Desktop 10
-Parallels SDK 10
-PrlUtils from https://github.com/bassamtabbara/prl-utils
-
+VirtualBox
 
 Building
 ========
@@ -22,16 +20,22 @@ Building
 To build run the following:
 
 ```
-packer build -parallel=false coreos.json 
+packer build coreos.json
 ```
 
-This will build coreos from the alpha channel. To build from other channels run:
+This will build CoreOS from the current channel, with the checksum of `560f13071604d492e19bbc9f0818713a`. To build from other channels run:
 
 ```
-packer build -parallel=false -var 'channel=beta' coreos.json 
+packer build \
+  -parallel=false \
+  -var 'channel=beta' \
+  -var 'checksum=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+  coreos.json
 ```
 
-channel can be set to "stable", "beta" or "alpha". Default is "alpha". 
-
-The -parallel=false is used to avoid a bug in packer (see https://github.com/mitchellh/packer/issues/1665)
-
+Variables
+=========
+- channel - Can be set to `alpha`, `beta`, or `stable` *DEFAULT: stable*
+- version - The version of CoreOS *DEFAULT: current*
+- checksum_type - The checksum algorithm for the iso *DEFAULT: md5*
+- checksum - The checksum of the latest iso *DEFAULT: 560f13071604d492e19bbc9f0818713a*
