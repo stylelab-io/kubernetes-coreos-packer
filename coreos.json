@@ -92,7 +92,24 @@
       "environment_vars" : [],
       "scripts": [
         "scripts/oem.sh",
-        "scripts/cleanup.sh"
+        "scripts/cleanup.sh",
+        "../cylent-ansible/aws/vpc/roles/coreos-instance/files/bootstrap.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../cylent-ansible/aws/vpc/roles/coreos-instance/files/get-pip.py",
+      "destination": "/home/core/get-pip.py"
+    },
+    {
+      "type": "file",
+      "source": "../cylent-ansible/aws/vpc/roles/coreos-instance/files/runner",
+      "destination": "/home/core/bin/pip"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "/home/core/bin/python /home/core/get-pip.py"
       ]
     }
   ],
