@@ -88,6 +88,8 @@ module VagrantPlugins
 
             path = "/var/tmp/networks.yml"
             path_esc = path.gsub("/", "-")
+            # systemd doesn't need a first -
+            path_esc.slice!(0)
             comm.upload(temp.path, path)
             comm.sudo("systemctl start system-cloudinit@#{path_esc}.service")
           end
