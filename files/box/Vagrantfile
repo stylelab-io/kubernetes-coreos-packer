@@ -9,6 +9,9 @@ require_relative 'change_host_name.rb'
 require_relative 'configure_networks.rb'
 
 Vagrant.configure("2") do |config|
+  # always use Vagrants insecure key
+  config.ssh.insert_key = false
+
   # SSH in as the default 'core' user, it has the vagrant ssh key.
   config.ssh.username = "core"
 
@@ -36,5 +39,5 @@ Vagrant.configure("2") do |config|
     prl.functional_psf    = false
     prl.regen_box_uuid    = true
   end
-   
+
 end
