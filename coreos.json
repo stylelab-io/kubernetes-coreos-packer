@@ -112,8 +112,8 @@
       "inline": [
         "/home/core/bin/python /home/core/get-pip.py",
         "chmod -R 755 /home/core/bin",
-        "mkdir -p /etc/profile.d",
-        "echo export PATH=$PATH:/home/core/bin > /etc/profile.d/python.sh"
+        "mkdir -p /opt",
+        "ln -s /home/core/bin /opt/bin"
       ]
     }
   ],
