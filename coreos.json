@@ -1,137 +1,125 @@
 {
-  "builders": [
-    {
-      "type": "virtualbox-iso",
-      "vm_name": "coreos-{{user `channel`}}",
-
-      "iso_checksum": "{{user `checksum`}}",
-      "iso_checksum_type": "{{user `checksum_type`}}",
-      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
-
-      "http_directory": "files",
-
-      "ssh_port": 22,
-      "ssh_username": "core",
-      "ssh_key_path": "files/vagrant",
-      "ssh_wait_timeout": "10m",
-
-      "guest_os_type": "Linux26_64",
-      "hard_drive_interface": "sata",
-      "disk_size": 40960,
-      "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
-        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
-      ],
-      "guest_additions_mode": "disable",
-
-      "boot_command": [
-        "sudo -i<enter>",
-        "systemctl stop sshd.socket<enter>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
-        "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
-        "reboot<enter>"
-      ],
-      "boot_wait": "30s",
-      "shutdown_command": "sudo -S shutdown -P now",
-
-      "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-virtualbox",
-      "virtualbox_version_file": ".virtualbox_version"
-    },
-    {
-      "type": "vmware-iso",
-      "vm_name": "coreos-{{user `channel`}}",
-      "vmdk_name": "coreos-{{user `channel`}}",
-
-      "iso_checksum": "{{user `checksum`}}",
-      "iso_checksum_type": "{{user `checksum_type`}}",
-      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
-
-      "http_directory": "files",
-
-      "ssh_port": 22,
-      "ssh_username": "core",
-      "ssh_key_path": "files/vagrant",
-      "ssh_wait_timeout": "10m",
-
-      "guest_os_type": "otherlinux-64",
-      "disk_size": 40960,
-
-      "vmx_data": {
-        "cpuid.coresPerSocket": "1",
-        "memsize": "1024",
-        "numvcpus": "1",
-        "vhv.enable": "TRUE"
-      },
-
-      "boot_command": [
-        "sudo -i<enter>",
-        "systemctl stop sshd.socket<enter>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
-        "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
-        "reboot<enter>"
-      ],
-      "boot_wait": "30s",
-      "shutdown_command": "sudo -S shutdown -P now",
-
-      "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-vmware"
+    "builders": [
+        {
+            "type": "googlecompute",
+            "account_file": "{{user `gce_account_file`}}",
+            "project_id": "{{user `gce_project_id`}}",
+            "source_image": "{{user `gce_source_image`}}",
+            "zone": "us-central1-a",
+            "disk_size": "10",
+            "image_name": "coreos-{{user `channel`}}-{{user `version`}}-kube-{{user `kube_version`}}-{{timestamp}}"
+        },
+        {
+            "type": "virtualbox-iso",
+            "vm_name": "coreos-{{user `channel`}}",
+            "iso_checksum": "{{user `checksum`}}",
+            "iso_checksum_type": "{{user `checksum_type`}}",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+            "http_directory": "files",
+            "ssh_port": 22,
+            "ssh_username": "core",
+            "ssh_key_path": "files/vagrant",
+            "ssh_wait_timeout": "10m",
+            "guest_os_type": "Linux26_64",
+            "hard_drive_interface": "sata",
+            "disk_size": 40960,
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "1"
+                ]
+            ],
+            "guest_additions_mode": "disable",
+            "boot_command": [
+                "sudo -i<enter>",
+                "systemctl stop sshd.socket<enter>",
+                "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+                "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+                "reboot<enter>"
+            ],
+            "boot_wait": "30s",
+            "shutdown_command": "sudo -S shutdown -P now",
+            "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-virtualbox",
+            "virtualbox_version_file": ".virtualbox_version"
+        },
+        {
+            "type": "vmware-iso",
+            "vm_name": "coreos-{{user `channel`}}",
+            "vmdk_name": "coreos-{{user `channel`}}",
+            "iso_checksum": "{{user `checksum`}}",
+            "iso_checksum_type": "{{user `checksum_type`}}",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+            "http_directory": "files",
+            "ssh_port": 22,
+            "ssh_username": "core",
+            "ssh_key_path": "files/vagrant",
+            "ssh_wait_timeout": "10m",
+            "guest_os_type": "otherlinux-64",
+            "disk_size": 40960,
+            "vmx_data": {
+                "cpuid.coresPerSocket": "1",
+                "memsize": "1024",
+                "numvcpus": "1",
+                "vhv.enable": "TRUE"
+            },
+            "boot_command": [
+                "sudo -i<enter>",
+                "systemctl stop sshd.socket<enter>",
+                "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+                "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+                "reboot<enter>"
+            ],
+            "boot_wait": "30s",
+            "shutdown_command": "sudo -S shutdown -P now",
+            "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-vmware"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/coreos-setup-environment",
+            "destination": "coreos-setup-environment"
+        },
+        {
+            "type": "file",
+            "source": "files/cloud-config.yml",
+            "destination": "cloud-config.yml"
+        },
+        {
+            "type": "shell",
+            "environment_vars": ["KUBE_VERSION=v1.0.3"],
+            "scripts": [
+                "scripts/oem.sh",
+                "scripts/kubernetes.sh",
+                "scripts/cleanup.sh"
+            ]
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos-{{user `channel`}}-{{ user `version`}}.box",
+            "vagrantfile_template": "files/box/Vagrantfile",
+            "include": [
+                "files/box/change_host_name.rb",
+                "files/box/configure_networks.rb"
+            ]
+        }
+    ],
+    "variables": {
+        "kube_version": "v1.0.3",
+        "channel": "alpha",
+        "version": "815.0.0",
+        "checksum_type": "md5",
+        "checksum": "da312c619cd7f47d148cc3af5b0bed38",
+        "gce_source_image": "coreos-alpha-815-0-0-v20150924"
     }
-  ],
-  "provisioners": [
-    {
-      "type": "file",
-      "source": "files/coreos-setup-environment",
-      "destination": "coreos-setup-environment"
-    },
-    {
-      "type": "file",
-      "source": "files/cloud-config.yml",
-      "destination": "cloud-config.yml"
-    },
-    {
-      "type": "shell",
-      "environment_vars" : [],
-      "scripts": [
-        "scripts/oem.sh",
-        "scripts/cleanup.sh",
-        "../cylent-ansible/aws/vpc/roles/coreos-instance/files/bootstrap.sh"
-      ]
-    },
-    {
-      "type": "file",
-      "source": "../cylent-ansible/aws/vpc/roles/coreos-instance/files/get-pip.py",
-      "destination": "/home/core/get-pip.py"
-    },
-    {
-      "type": "file",
-      "source": "../cylent-ansible/aws/vpc/roles/coreos-instance/files/runner",
-      "destination": "/home/core/bin/pip"
-    },
-    {
-      "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
-      "inline": [
-        "/home/core/bin/python /home/core/get-pip.py",
-        "chmod -R 755 /home/core/bin",
-        "mkdir -p /opt",
-        "ln -s /home/core/bin /opt/bin"
-      ]
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "vagrant",
-      "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos-{{user `channel`}}-{{ user `version`}}.box",
-      "vagrantfile_template": "files/box/Vagrantfile",
-      "include": [
-        "files/box/change_host_name.rb",
-        "files/box/configure_networks.rb"
-      ]
-    }
-  ],
-  "variables": {
-    "channel": "alpha",
-    "version": "815.0.0",
-    "checksum_type": "md5",
-    "checksum": "da312c619cd7f47d148cc3af5b0bed38"
-  }
 }
