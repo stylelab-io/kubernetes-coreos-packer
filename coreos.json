@@ -7,14 +7,14 @@
             "source_image": "{{user `gce_source_image`}}",
             "zone": "us-central1-a",
             "disk_size": "10",
-            "image_name": "coreos-{{user `channel`}}-{{user `version`}}-kube-{{user `kube_version`}}-{{timestamp}}"
+            "image_name": "coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-{{timestamp}}"
         },
         {
             "type": "virtualbox-iso",
             "vm_name": "coreos-{{user `channel`}}",
             "iso_checksum": "{{user `checksum`}}",
             "iso_checksum_type": "{{user `checksum_type`}}",
-            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
             "http_directory": "files",
             "ssh_port": 22,
             "ssh_username": "core",
@@ -47,7 +47,7 @@
             ],
             "boot_wait": "30s",
             "shutdown_command": "sudo -S shutdown -P now",
-            "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-virtualbox",
+            "output_directory": "builds/coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-virtualbox",
             "virtualbox_version_file": ".virtualbox_version"
         },
         {
@@ -56,7 +56,7 @@
             "vmdk_name": "coreos-{{user `channel`}}",
             "iso_checksum": "{{user `checksum`}}",
             "iso_checksum_type": "{{user `checksum_type`}}",
-            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
             "http_directory": "files",
             "ssh_port": 22,
             "ssh_username": "core",
@@ -79,7 +79,7 @@
             ],
             "boot_wait": "30s",
             "shutdown_command": "sudo -S shutdown -P now",
-            "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-vmware"
+            "output_directory": "builds/coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-vmware"
         }
     ],
     "provisioners": [
@@ -106,7 +106,8 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos-{{user `channel`}}-{{ user `version`}}.box",
+            "only": ["virtualbox-iso", "vmware-iso"],
+            "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos-{{user `channel`}}-{{ user `coreos_version`}}.box",
             "vagrantfile_template": "files/box/Vagrantfile",
             "include": [
                 "files/box/change_host_name.rb",
@@ -115,9 +116,11 @@
         }
     ],
     "variables": {
-        "kube_version": "v1.0.3",
+        "kube_version": "v1.0.6",
+        "kube_human_version": "1-0-6",
         "channel": "alpha",
-        "version": "815.0.0",
+        "coreos_version": "815.0.0",
+        "coreos_human_version": "815-0-0",
         "checksum_type": "md5",
         "checksum": "da312c619cd7f47d148cc3af5b0bed38",
         "gce_source_image": "coreos-alpha-815-0-0-v20150924"

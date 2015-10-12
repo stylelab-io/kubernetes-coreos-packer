@@ -1,4 +1,4 @@
-#CoreOS--Kubernetes Packer#
+#CoreOS-Kubernetes Packer#
 
 Packer.io templates for CoreOS with Kubernetes installed. These are based on the following:
 
@@ -47,9 +47,11 @@ packer build \
 ```
 
 ## Variables ##
-- kube_version - The Relase version of Kubernetes **DEFAULT: v1.0.6**
 - channel - Can be set to `alpha`, `beta`, or `stable` **DEFAULT: alpha**
-- version - The version of CoreOS **DEFAULT: 815.0.0**
+- coreos_version - The version of CoreOS **DEFAULT: 815.0.0**
+- coreos_human_version - The CoreOS version for GCE regex **DEFAULT: 815.0.0**
 - checksum_type - The checksum algorithm for the iso **DEFAULT: md5**
 - checksum - The checksum of the latest iso **DEFAULT: da312c619cd7f47d148cc3af5b0bed38**
+- kube_version - The Relase version of Kubernetes **DEFAULT: v1.0.6**
+- kube_human_version - The Kubernetes version for GCE regex **DEFAULT: 1-0-6**
 - gce_source_image ( Not generatable =( )- The name of the gce source image **DEFAULT: coreos-alpha-815-0-0-v20150924**
