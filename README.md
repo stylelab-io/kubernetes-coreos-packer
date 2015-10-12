@@ -47,6 +47,7 @@ packer build \
 ```
 
 ## Variables ##
+- kube_version - The Relase version of Kubernetes **DEFAULT: v1.0.6**
 - channel - Can be set to `alpha`, `beta`, or `stable` **DEFAULT: alpha**
 - version - The version of CoreOS **DEFAULT: 815.0.0**
 - checksum_type - The checksum algorithm for the iso **DEFAULT: md5**
