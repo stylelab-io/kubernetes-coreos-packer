@@ -89,18 +89,21 @@
             "destination": "coreos-setup-environment"
         },
         {
-            "type": "file",
-            "source": "files/cloud-config.yml",
-            "destination": "cloud-config.yml"
+            "type": "shell",
+            "environment_vars": ["KUBE_VERSION=v1.0.3"],
+            "scripts": [
+                "scripts/kubernetes.sh"
+            ]
+        },
+        {
+            "type": "shell",
+            "scripts": ["scripts/vagrant_configure.sh"],
+            "only": ["virtualbox-iso", "vmware-iso"]
         },
         {
             "type": "shell",
             "environment_vars": ["KUBE_VERSION=v1.0.3"],
-            "scripts": [
-                "scripts/oem.sh",
-                "scripts/kubernetes.sh",
-                "scripts/cleanup.sh"
-            ]
+            "scripts": ["scripts/cleanup.sh"]
         }
     ],
     "post-processors": [
