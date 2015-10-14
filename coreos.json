@@ -96,6 +96,11 @@
             ]
         },
         {
+            "type": "file",
+            "source": "files/etcd-ca-linux64",
+            "destination": "/opt/etcd"
+        },
+        {
             "type": "shell",
             "scripts": ["scripts/vagrant_configure.sh"],
             "only": ["virtualbox-iso", "vmware-iso"]

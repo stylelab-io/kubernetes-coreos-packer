@@ -8,12 +8,19 @@ Packer.io templates for CoreOS with Kubernetes installed. These are based on the
   - https://github.com/kevit/coreos-packer
   - https://github.com/barklyprotects/coreos-packer
 
-## Kubernetes ##
+## Pre installed ##
+
+### Kubernetes ###
 The following files will be deployed:
 
   - /opt/kubernetes/hyperkube (hyperkube is an all-in-one server binary)
   - /opt/kubernetes/kubectl
   - /opt/kubernetes/kubelet
+
+### etcd ###
+The following files will be deployed:
+
+  - /opt/etcd/etcd-ca       => cert generation tool for etcd. see: https://github.com/coreos/etcd-ca
 
 
 ## Supported Builders ##

@@ -7,7 +7,7 @@ version=${KUBE_VERSION:-v1.0.6}
 
 wget https://github.com/kubernetes/kubernetes/releases/download/${version}/kubernetes.tar.gz
 tar -xvf kubernetes.tar.gz
-sudo mkdir -p /opt/kubernetes/
+sudo mkdir -p /opt/kubernetes
 tar -xvf ./kubernetes/server/kubernetes-salt.tar.gz
 tar -xvf ./kubernetes/server/kubernetes-server-linux-amd64.tar.gz
 sudo cp ./kubernetes/server/bin/hyperkube /opt/kubernetes/hyperkube
