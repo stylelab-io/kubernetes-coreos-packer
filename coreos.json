@@ -89,6 +89,21 @@
             "destination": "coreos-setup-environment"
         },
         {
+            "type": "file",
+            "source": "files/etcd-ca-linux64",
+            "destination": "etcd-ca"
+        },
+        {
+            "type": "file",
+            "source": "files/locofo-linux64",
+            "destination": "locofo-linux64"
+        },
+        {
+            "type": "file",
+            "source": "files/metadata-downloader.sh",
+            "destination": "metadata-downloader.sh"
+        },
+        {
             "type": "shell",
             "environment_vars": ["KUBE_VERSION=v1.0.3"],
             "scripts": [
@@ -96,9 +111,10 @@
             ]
         },
         {
-            "type": "file",
-            "source": "files/etcd-ca-linux64",
-            "destination": "/opt/etcd"
+            "type": "shell",
+            "scripts": [
+                "scripts/move_files.sh"
+            ]
         },
         {
             "type": "shell",
