@@ -48,9 +48,10 @@ packer build \
   -var 'channel=beta' \
   -var 'checksum=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
   -var 'gce_project_id=xxxxx-xxx'
-  -var 'gce_account_file=~/your/account/files/project.json'
+  -var 'gce_account_file=/absolute/path/to/your/account/file.json'
   coreos.json
 ```
+
 
 ## Variables ##
 - channel - Can be set to `alpha`, `beta`, or `stable` **DEFAULT: alpha**

@@ -1,6 +1,7 @@
 # Cache objects
 packer_cache/
 builds/
+vars.json
 
 # For built boxes
 *.box
