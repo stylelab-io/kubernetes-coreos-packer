@@ -1,5 +1,7 @@
 # Cache objects
 packer_cache/
+builds/
 
 # For built boxes
 *.box
+*.DS

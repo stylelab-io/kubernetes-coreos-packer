@@ -1,0 +1,151 @@
+{
+    "builders": [
+        {
+            "type": "googlecompute",
+            "account_file": "{{user `gce_account_file`}}",
+            "project_id": "{{user `gce_project_id`}}",
+            "source_image": "{{user `gce_source_image`}}",
+            "zone": "us-central1-a",
+            "disk_size": "10",
+            "image_name": "coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-{{timestamp}}"
+        },
+        {
+            "type": "virtualbox-iso",
+            "vm_name": "coreos-{{user `channel`}}",
+            "iso_checksum": "{{user `checksum`}}",
+            "iso_checksum_type": "{{user `checksum_type`}}",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
+            "http_directory": "files",
+            "ssh_port": 22,
+            "ssh_username": "core",
+            "ssh_key_path": "files/vagrant",
+            "ssh_wait_timeout": "10m",
+            "guest_os_type": "Linux26_64",
+            "hard_drive_interface": "sata",
+            "disk_size": 40960,
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "1"
+                ]
+            ],
+            "guest_additions_mode": "disable",
+            "boot_command": [
+                "sudo -i<enter>",
+                "systemctl stop sshd.socket<enter>",
+                "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+                "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+                "reboot<enter>"
+            ],
+            "boot_wait": "30s",
+            "shutdown_command": "sudo -S shutdown -P now",
+            "output_directory": "builds/coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-virtualbox",
+            "virtualbox_version_file": ".virtualbox_version"
+        },
+        {
+            "type": "vmware-iso",
+            "vm_name": "coreos-{{user `channel`}}",
+            "vmdk_name": "coreos-{{user `channel`}}",
+            "iso_checksum": "{{user `checksum`}}",
+            "iso_checksum_type": "{{user `checksum_type`}}",
+            "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
+            "http_directory": "files",
+            "ssh_port": 22,
+            "ssh_username": "core",
+            "ssh_key_path": "files/vagrant",
+            "ssh_wait_timeout": "10m",
+            "guest_os_type": "otherlinux-64",
+            "disk_size": 40960,
+            "vmx_data": {
+                "cpuid.coresPerSocket": "1",
+                "memsize": "1024",
+                "numvcpus": "1",
+                "vhv.enable": "TRUE"
+            },
+            "boot_command": [
+                "sudo -i<enter>",
+                "systemctl stop sshd.socket<enter>",
+                "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+                "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+                "reboot<enter>"
+            ],
+            "boot_wait": "30s",
+            "shutdown_command": "sudo -S shutdown -P now",
+            "output_directory": "builds/coreos-{{user `channel`}}-{{user `coreos_human_version`}}-kube-{{user `kube_human_version`}}-vmware"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/coreos-setup-environment",
+            "destination": "coreos-setup-environment"
+        },
+        {
+            "type": "file",
+            "source": "files/etcd-ca-linux64",
+            "destination": "etcd-ca"
+        },
+        {
+            "type": "file",
+            "source": "files/locofo-linux-amd64",
+            "destination": "locofo-linux64"
+        },
+        {
+            "type": "file",
+            "source": "files/metadata-downloader.sh",
+            "destination": "metadata-downloader.sh"
+        },
+        {
+            "type": "shell",
+            "environment_vars": ["KUBE_VERSION={{user `kube_version`}}"],
+            "scripts": [
+                "scripts/kubernetes.sh"
+            ]
+        },
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/move_files.sh"
+            ]
+        },
+        {
+            "type": "shell",
+            "scripts": ["scripts/vagrant_configure.sh"],
+            "only": ["virtualbox-iso", "vmware-iso"]
+        },
+        {
+            "type": "shell",
+            "scripts": ["scripts/cleanup.sh"]
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "only": ["virtualbox-iso", "vmware-iso"],
+            "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos-{{user `channel`}}-{{ user `coreos_version`}}.box",
+            "vagrantfile_template": "files/box/Vagrantfile",
+            "include": [
+                "files/box/change_host_name.rb",
+                "files/box/configure_networks.rb"
+            ]
+        }
+    ],
+    "variables": {
+        "kube_version": "v1.1.1",
+        "kube_human_version": "1-1-1",
+        "channel": "alpha",
+        "coreos_version": "815.0.0",
+        "coreos_human_version": "845-0-0",
+        "checksum_type": "md5",
+        "checksum": "da312c619cd7f47d148cc3af5b0bed38",
+        "gce_source_image": "coreos-alpha-815-0-0-v20150924"
+    }
+}
