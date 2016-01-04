@@ -84,24 +84,13 @@
     ],
     "provisioners": [
         {
-            "type": "file",
-            "source": "files/coreos-setup-environment",
-            "destination": "coreos-setup-environment"
+            "type": "shell",
+            "inline": ["sudo mkdir -p /opt/bin", "sudo chmod 777 /opt/bin"]
         },
         {
             "type": "file",
-            "source": "files/etcd-ca-linux64",
-            "destination": "etcd-ca"
-        },
-        {
-            "type": "file",
-            "source": "files/locofo-linux-amd64",
-            "destination": "locofo-linux64"
-        },
-        {
-            "type": "file",
-            "source": "files/metadata-downloader.sh",
-            "destination": "metadata-downloader.sh"
+            "source": "bin/",
+            "destination": "/opt/bin"
         },
         {
             "type": "shell",
@@ -112,9 +101,7 @@
         },
         {
             "type": "shell",
-            "scripts": [
-                "scripts/move_files.sh"
-            ]
+            "inline": ["sudo chown root:root /opt/bin", "sudo chmod 775 /opt/bin", "sudo chmod -R 775 /opt/bin/*"]
         },
         {
             "type": "shell",
@@ -139,8 +126,8 @@
         }
     ],
     "variables": {
-        "kube_version": "v1.1.1",
-        "kube_human_version": "1-1-1",
+        "kube_version": "v1.1.2",
+        "kube_human_version": "1-1-2",
         "channel": "alpha",
         "coreos_version": "815.0.0",
         "coreos_human_version": "845-0-0",
