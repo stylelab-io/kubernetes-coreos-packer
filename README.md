@@ -13,29 +13,42 @@ Packer.io templates for CoreOS with Kubernetes installed. These are based on the
 ### Kubernetes ###
 The following files will be deployed:
 
-  - /opt/kubernetes/hyperkube (hyperkube is an all-in-one server binary)
-  - /opt/kubernetes/kubectl
-  - /opt/kubernetes/kubelet
+  - /opt/hyperkube (hyperkube is an all-in-one server binary)
+  - /opt/kubectl
+  - /opt/kubelet
 
 ### etcd ###
 The following files will be deployed:
 
-  - /opt/etcd/etcd-ca       => cert generation tool for etcd. see: https://github.com/coreos/etcd-ca
+  - /opt/etcd-ca       => cert generation tool for etcd. see: https://github.com/coreos/etcd-ca
 
+### locofo ###
+Proxy for health checks
+/opt/locofo-linux-amd64
+
+### metadata-downloader ###
+Downloads metadata
+
+```
+key=$1
+output=$2
+```
+/opt/metadata-downloader
 
 ## Supported Builders ##
 virtualbox-iso
 vmware-iso
 googlecompute
 
-## Requirements ##
-VirtualBox > 5
-
 ## Building ##
 To build run the following:
 
 ```
-packer build coreos.json
+make
+
+or
+
+packer build corekube.json
 ```
 
 You will be asked for you GCE account file and the project.
