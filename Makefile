@@ -1,6 +1,6 @@
 VERSION_ID := 0.1.9
 CHANNEL    := alpha
-KUBE_VERSION := 1.1.2
+KUBE_VERSION := 1.1.3
 
 build-all:
 	packer build -var-file=vars.json corekube.json
