@@ -85,7 +85,7 @@
     "provisioners": [
         {
             "type": "shell",
-            "inline": ["sudo mkdir -p /opt/bin"]
+            "inline": ["sudo mkdir -p /opt/bin", "sudo chmod 777 /opt/bin"]
         },
         {
             "type": "file",
@@ -94,14 +94,14 @@
         },
         {
             "type": "shell",
-            "inline": ["sudo chmod 775 /opt/bin/*"]
-        },
-        {
-            "type": "shell",
             "environment_vars": ["KUBE_VERSION={{user `kube_version`}}"],
             "scripts": [
                 "scripts/kubernetes.sh"
             ]
+        },
+        {
+            "type": "shell",
+            "inline": ["sudo chown root:root /opt/bin", "sudo chmod 775 /opt/bin", "sudo chmod -R 775 /opt/bin/*"]
         },
         {
             "type": "shell",
