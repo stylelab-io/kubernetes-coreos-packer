@@ -25,40 +25,41 @@ The following files will be deployed:
 
 ## Supported Builders ##
 virtualbox-iso
-vmware-iso
+vmware-iso // untested but should work too
 googlecompute
 
 ## Requirements ##
+Depending on what you want to build.
 VirtualBox > 5
 VMware Fusion
+Google Compute Service Account and `gcloud`configured
+
+Add `settings.json` with following content
+
+```
+{
+
+}
+```
+
+## Configuration ##
+
+To configure the channel and the kubernetes version:
+
+`CHANNEL=stable; KUBE_VERSION=1.1.7; make build`
+
+Default is alpha and 1.1.7
+
+### Google ###
+Add your `gce_project_id` and your `gce_account_file`
 
 ## Building ##
-To build run the following:
-
 ```
-packer build coreos.json
+make build
+
+make build-virtualbox
+make build-vmware
+make build-google
+
+# install vagrant machines
 ```
-
-You will be asked for you GCE account file and the project.
-
-This will build CoreOS from the current channel, with the checksum of `560f13071604d492e19bbc9f0818713a`. To build from other channels run:
-
-```
-packer build \
-  -parallel=false \
-  -var 'channel=beta' \
-  -var 'checksum=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-  -var 'gce_project_id=xxxxx-xxx'
-  -var 'gce_account_file=~/your/account/files/project.json'
-  coreos.json
-```
-
-## Variables ##
-- channel - Can be set to `alpha`, `beta`, or `stable` **DEFAULT: alpha**
-- coreos_version - The version of CoreOS **DEFAULT: 815.0.0**
-- coreos_human_version - The CoreOS version for GCE regex **DEFAULT: 815.0.0**
-- checksum_type - The checksum algorithm for the iso **DEFAULT: md5**
-- checksum - The checksum of the latest iso **DEFAULT: da312c619cd7f47d148cc3af5b0bed38**
-- kube_version - The Relase version of Kubernetes **DEFAULT: v1.0.6**
-- kube_human_version - The Kubernetes version for GCE regex **DEFAULT: 1-0-6**
-- gce_source_image ( Not generatable =( )- The name of the gce source image **DEFAULT: coreos-alpha-815-0-0-v20150924**

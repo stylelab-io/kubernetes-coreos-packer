@@ -105,7 +105,7 @@
         },
         {
             "type": "shell",
-            "environment_vars": ["KUBE_VERSION=v1.0.3"],
+            "environment_vars": ["KUBE_VERSION={{user `kube_version`}}"],
             "scripts": [
                 "scripts/kubernetes.sh"
             ]
@@ -123,7 +123,6 @@
         },
         {
             "type": "shell",
-            "environment_vars": ["KUBE_VERSION=v1.0.3"],
             "scripts": ["scripts/cleanup.sh"]
         }
     ],
@@ -140,13 +139,13 @@
         }
     ],
     "variables": {
-        "kube_version": "v1.0.6",
-        "kube_human_version": "1-0-6",
+        "kube_version": "v1.1.7",
+        "kube_human_version": "1-1-7",
         "channel": "alpha",
-        "coreos_version": "815.0.0",
-        "coreos_human_version": "815-0-0",
+        "coreos_version": "935.0.0",
+        "coreos_human_version": "935-0-0",
         "checksum_type": "md5",
-        "checksum": "da312c619cd7f47d148cc3af5b0bed38",
-        "gce_source_image": "coreos-alpha-815-0-0-v20150924"
+        "checksum": "acc7f2d712e5c6414bb19dcda6040b58",
+        "gce_source_image": "coreos-alpha-935-0-0-v20160122"
     }
 }
