@@ -48,7 +48,13 @@ To configure the channel and the kubernetes version:
 
 `CHANNEL=stable; KUBE_VERSION=1.1.7; make build`
 
-Default is alpha and 1.1.7
+### Defaults ###
+  CoreOs Channel = alpha
+  Kubernetes = newest kubernetes version from github
+
+  **Warning!**
+  If the kubernetes version from github has something like -patch or v1.x.x-beta5, the build will break! You should add the version you want!
+
 
 ### Google ###
 Add your `gce_project_id` and your `gce_account_file`
