@@ -46,7 +46,7 @@ Add `settings.json` with following content
 
 To configure the channel and the kubernetes version:
 
-`CHANNEL=stable; KUBE_VERSION=1.1.7; make build`
+`CHANNEL=stable KUBE_VERSION=1.1.7 make build`
 
 ### Defaults ###
   CoreOs Channel = alpha

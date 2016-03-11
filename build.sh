@@ -18,8 +18,8 @@ GOOGLE_IMAGE=$(gcloud compute images list |grep coreos-cloud |grep ${CHANNEL} | 
 if [[ -z "${KUBE_VERSION}" ]]; then
   # get releases as json, grep 1. line with tag_name, get value, remove leading '"v' , remove ending '"'
   KUBE_VERSION=$(curl -s https://api.github.com/repos/kubernetes/kubernetes/releases | grep -m 1 'tag_name' | awk '{print $2}' | cut -d "v" -f 2 | sed 's/".*//' )
-
 fi
+
 KUBE_MAJOR=$(echo ${KUBE_VERSION} | cut -d "." -f 1)
 KUBE_MINOR=$(echo ${KUBE_VERSION} | cut -d "." -f 2)
 KUBE_PATCH=$(echo ${KUBE_VERSION} | sed "s/${KUBE_MAJOR}.${KUBE_MINOR}.//")
