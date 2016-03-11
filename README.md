@@ -13,9 +13,13 @@ Packer.io templates for CoreOS with Kubernetes installed. These are based on the
 ### Kubernetes ###
 The following files will be deployed:
 
-  - /opt/kubernetes/hyperkube (hyperkube is an all-in-one server binary)
   - /opt/kubernetes/kubectl
   - /opt/kubernetes/kubelet
+  - /opt/kubernetes/kube-proxy
+  - /opt/kubernetes/kube-apiserver
+  - /opt/kubernetes/kube-controller-manager
+  - /opt/kubernetes/linkcheck
+  - /opt/kubernetes/kube-scheduler
 
 ### etcd ###
 The following files will be deployed:
